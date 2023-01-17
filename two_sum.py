@@ -6,10 +6,12 @@ def two_sum(nums: list[int], target: int) -> list[int]:
     :return: list[int]
     """
 
-    for i, num_1 in enumerate(nums):
-        for j, num_2 in enumerate(nums):
-            if num_1 + num_2 == target and i != j:
-                return [i, j]
+    hash_map = {}
+
+    for i, num in enumerate(nums):
+        if target - num in hash_map:
+            return [i, hash_map[target - num]]
+        hash_map[num] = i
 
 
 def test(expected: list[int], actual: list[int]):
