@@ -5,22 +5,30 @@ def valid_parentheses(s: str) -> bool:
     :return: bool
     """
 
-    hash_map = {'(': 0, ')': 0, '[': 0, ']': 0, '{': 0, '}': 0}
+    hash_map = {
+        "()": 1,
+        "[]": 1,
+        "{}": 1,
+    }
 
     for char in s:
-        # print(char if char == ")" else "S")
-        # print(hash_map.get("3", 0))
-        # hash_map[char] = hash_map.get(char, 0) + 1
-        hash_map[char] += 1
+        if char == "(":
+            hash_map["()"] = 0
+        elif char == "[":
+            hash_map["[]"] = 0
+        elif char == "{":
+            hash_map["{}"] = 0
+        elif char == ")" and hash_map["()"] != 1:
+            hash_map["()"] = 0
+        elif char == "]" and hash_map["[]"] != 1:
+            hash_map["[]"] = 0
+        elif char == "}" and hash_map["{}"] != 1:
+            hash_map["{}"] = 0
 
-    if hash_map["("] != hash_map[")"]:
+    if hash_map["()"] == 1 and hash_map["[]"] == 1 and hash_map["{}"] == 1:
+        return True
+    else:
         return False
-    if hash_map["["] != hash_map["]"]:
-        return False
-    if hash_map["{"] != hash_map["}"]:
-        return False
-
-    return True
 
 
 def test(expected: bool, actual: bool):
