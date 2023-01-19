@@ -4,31 +4,23 @@ def valid_parentheses(s: str) -> bool:
     :param s: string to check
     :return: bool
     """
-
-    hash_map = {
-        "()": 1,
-        "[]": 1,
-        "{}": 1,
+    stack = []
+    closing = {
+        ")": "(",
+        "]": "[",
+        "}": "{",
     }
 
     for char in s:
-        if char == "(":
-            hash_map["()"] = 0
-        elif char == "[":
-            hash_map["[]"] = 0
-        elif char == "{":
-            hash_map["{}"] = 0
-        elif char == ")" and hash_map["()"] != 1:
-            hash_map["()"] = 0
-        elif char == "]" and hash_map["[]"] != 1:
-            hash_map["[]"] = 0
-        elif char == "}" and hash_map["{}"] != 1:
-            hash_map["{}"] = 0
+        if char in closing:
+            if stack and stack[-1] == closing[char]:
+                stack.pop()
+            else:
+                return False
+        else:
+            stack.append(char)
 
-    if hash_map["()"] == 1 and hash_map["[]"] == 1 and hash_map["{}"] == 1:
-        return True
-    else:
-        return False
+    return True if not stack else False
 
 
 def test(expected: bool, actual: bool):
@@ -38,6 +30,7 @@ def test(expected: bool, actual: bool):
         print(f"❌\nexpected: {expected}\nactual:{actual}")
 
 
+test(False, valid_parentheses(")("))
 test(True, valid_parentheses("()"))
 test(True, valid_parentheses("()[]{}"))
 test(False, valid_parentheses("())[]{}"))
