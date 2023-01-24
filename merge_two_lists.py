@@ -1,26 +1,35 @@
-def two_sum(nums: list[int], target: int) -> list[int]:
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+
+def merge_two_lists(list1: ListNode, list2: ListNode) -> ListNode:
     """
-    Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-    :param nums: list[int]
-    :param target: int
-    :return: list[int]
+    Merge the two lists in a one sorted list.
+    :param list1: ListNode
+    :param list2: ListNode
+    :return: ListNode
     """
 
-    hash_map = {}
+    dummy = ListNode()
+    tail = dummy
 
-    for i, num in enumerate(nums):
-        if target - num in hash_map:
-            return [i, hash_map[target - num]]
-        hash_map[num] = i
+    while list1 and list2:
+        if list1.val < list2.val:
+            tail.next = list1
+            list1 = list1.next
+        else:
+            tail.next = list2
+            list2 = list2.next
+        tail = tail.next
 
-
-def test(expected: list[int], actual: list[int]):
-    if sorted(expected) == sorted(actual):
-        print("⭕")
+    if list1:
+        tail.next = list1
     else:
-        print(f"❌\nexpected: {expected}\nactual:{actual}")
+        tail.next = list2
 
+    return dummy.next
 
-test([1, 2], two_sum([3, 2, 4], 6))
-test([0, 1], two_sum([3, 3], 6))
 
