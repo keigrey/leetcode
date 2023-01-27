@@ -7,27 +7,19 @@ def max_profit(prices: list[int]) -> int:
     :return: maximum profit
     """
 
-    price_hash = {
-        "cheap_price": prices[0],
-        "cheap_index": 0,
-        "expensive_price": prices[0],
-        "expensive_index": 0
-    }
+    l, r = 0, 1  # left -> buy, right -> sell
+    maximum_profit = 0
 
-    for i, price in enumerate(prices):
-        if price <= price_hash["cheap_price"]:
-            price_hash["cheap_price"] = price
-            price_hash["cheap_index"] = i
-            price_hash["expensive_price"] = price
-            price_hash["expensive_index"] = i
-        if price >= price_hash["expensive_price"]:
-            price_hash["expensive_price"] = price
-            price_hash["expensive_index"] = i
+    while r < len(prices):
+        if prices[l] < prices[r]:
+            profit = prices[r] - prices[l]
+            maximum_profit = max(maximum_profit, profit)
+        else:
+            l = r
+        r += 1
 
-    if price_hash["expensive_index"] <= price_hash["cheap_index"]:
-        return 0
-    else:
-        return price_hash["expensive_price"] - price_hash["cheap_price"]
+    return maximum_profit
+
 
 
 def test(expected: int, actual: int):
@@ -39,3 +31,5 @@ def test(expected: int, actual: int):
     
 test(5, max_profit([7, 1, 5, 3, 6, 4]))
 test(0, max_profit([7, 6, 4, 3, 1]))
+test(2, max_profit([2, 4, 1]))
+
